@@ -9,6 +9,16 @@ class HomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(title: const Text("Organized Camera")),
-        body: const Placeholder());
+        body: GridView.count(
+          crossAxisCount: 4,
+          children: [
+            GridTile(child: Text("Hola")),
+            GridTile(child: Text("Hola")),
+            GridTile(child: Text("Hola")),
+            GridTile(child: Text("Hola")),
+            GridTile(child: Text("Hola")),
+            GridTile(child: Text("Hola")),
+          ],
+        ));
   }
 }

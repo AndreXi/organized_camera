@@ -17,7 +17,7 @@ class _SampleItemDetailsViewState extends State<SampleItemDetailsView> {
   @override
   Widget build(BuildContext context) {
     openTest() async {
-      FilePicker.platform.getDirectoryPath().then((value) => setState(() async {
+      FilePicker.platform.getDirectoryPath().then((value) => setState(() {
             selectedDirectory = value;
           }));
 

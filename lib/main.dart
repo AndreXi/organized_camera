@@ -20,6 +20,11 @@ void main() async {
 
   // Register Hive adapters
   Hive.registerAdapter(SavedDirectoryAdapter());
+  final directoriesBox =
+      await Hive.openBox<SavedDirectory>("saved_directories");
+
+  // Clear box
+  directoriesBox.clear();
 
   // Run the app and pass in the SettingsController. The app listens to the
   // SettingsController for changes, then passes it further down to the

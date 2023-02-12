@@ -17,23 +17,21 @@ class SavedDirectoryAdapter extends TypeAdapter<SavedDirectory> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return SavedDirectory(
-      directory: fields[1] as String,
-      name: fields[2] as String,
-      iconId: fields[3] as int,
-    )..id = fields[0] as String;
+      directory: fields[0] as String,
+      name: fields[1] as String,
+      iconId: fields[2] as int,
+    );
   }
 
   @override
   void write(BinaryWriter writer, SavedDirectory obj) {
     writer
-      ..writeByte(4)
-      ..writeByte(0)
-      ..write(obj.id)
-      ..writeByte(1)
-      ..write(obj.directory)
-      ..writeByte(2)
-      ..write(obj.name)
       ..writeByte(3)
+      ..writeByte(0)
+      ..write(obj.directory)
+      ..writeByte(1)
+      ..write(obj.name)
+      ..writeByte(2)
       ..write(obj.iconId);
   }
 

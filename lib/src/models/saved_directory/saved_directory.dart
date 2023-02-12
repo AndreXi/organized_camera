@@ -11,15 +11,12 @@ const int defaultIcon = 0xe318; // Home
 @HiveType(typeId: 0)
 class SavedDirectory extends HiveObject {
   @HiveField(0)
-  late String id;
-
-  @HiveField(1)
   String directory;
 
-  @HiveField(2)
+  @HiveField(1)
   String name;
 
-  @HiveField(3)
+  @HiveField(2)
   int iconId;
 
   SavedDirectory({

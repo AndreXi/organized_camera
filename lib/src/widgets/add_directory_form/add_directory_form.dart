@@ -2,6 +2,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:organized_camera/src/models/saved_directory/saved_directory.dart';
 import 'package:organized_camera/src/services/saved_directory_data.dart';
+import 'package:organized_camera/src/widgets/add_directory_form/widgets/select_icon_dialog.dart';
 
 class AddDirectoryForm extends StatefulWidget {
   const AddDirectoryForm({super.key});
@@ -12,23 +13,39 @@ class AddDirectoryForm extends StatefulWidget {
 
 class _AddDirectoryFormState extends State<AddDirectoryForm> {
   final _formKey = GlobalKey<FormState>();
-  final nameController = TextEditingController();
-  final directoryController = TextEditingController();
+  final _nameController = TextEditingController();
+  final _directoryController = TextEditingController();
+  int iconIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     Future<bool> createDirectory() async {
       final newDirectory = SavedDirectory(
-          directory: directoryController.text, name: nameController.text);
+          directory: _directoryController.text,
+          name: _nameController.text,
+          iconId: availableIcons[iconIndex].hashCode);
       final result = await SavedDirectoryData().create(newDirectory);
       return result > 0;
     }
 
-    void onSelectIconPressed() {}
+    void onSelectIconPressed() {
+      showDialog(
+          context: context,
+          builder: (BuildContext ctx) {
+            return Dialog(
+              child: SelectIconDialog(
+                index: iconIndex,
+                setIndex: (newIndex) => setState(() {
+                  iconIndex = newIndex;
+                }),
+              ),
+            );
+          });
+    }
 
     void onSelectDirectory() {
       FilePicker.platform.getDirectoryPath().then((value) => setState(() {
-            directoryController.text = value ?? "";
+            _directoryController.text = value ?? "";
           }));
     }
 
@@ -49,12 +66,6 @@ class _AddDirectoryFormState extends State<AddDirectoryForm> {
         return;
       }
     }
-
-    Icon selectedIcon = Icon(
-      Icons.home,
-      color: Theme.of(context).primaryColor,
-      size: 24.0,
-    );
 
     return Padding(
       padding:
@@ -79,14 +90,13 @@ class _AddDirectoryFormState extends State<AddDirectoryForm> {
                 children: [
                   Expanded(
                     child: TextFormField(
-                      controller: nameController,
+                      controller: _nameController,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return "The profile name is required";
                         }
                         return null;
                       },
-                      autofocus: true,
                       decoration:
                           const InputDecoration(label: Text("Profile Name")),
                     ),
@@ -97,7 +107,11 @@ class _AddDirectoryFormState extends State<AddDirectoryForm> {
                     child: Card(
                       clipBehavior: Clip.hardEdge,
                       child: InkWell(
-                        child: selectedIcon,
+                        child: Icon(
+                          availableIcons[iconIndex].icon,
+                          color: Theme.of(context).primaryColor,
+                          size: 24.0,
+                        ),
                         onTap: onSelectIconPressed,
                       ),
                     ),
@@ -111,7 +125,7 @@ class _AddDirectoryFormState extends State<AddDirectoryForm> {
                   Expanded(
                     child: TextFormField(
                       readOnly: true,
-                      controller: directoryController,
+                      controller: _directoryController,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return "The directory is required";

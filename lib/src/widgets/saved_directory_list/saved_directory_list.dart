@@ -13,16 +13,20 @@ class SavedDirectoryList extends StatelessWidget {
         valueListenable:
             Hive.box<SavedDirectory>("saved_directories").listenable(),
         builder: (context, Box<SavedDirectory> box, _) {
-          return Container(
+          final directoriesMap = SavedDirectoryData().getAllMap();
+          final List<SavedDirectoryTile> directoryCards = [];
+
+          directoriesMap
+              .forEach((key, value) => directoryCards.add(SavedDirectoryTile(
+                    directory: value,
+                    index: key,
+                  )));
+
+          return SizedBox(
             height: 300,
             child: GridView.count(
               crossAxisCount: 4,
-              children: SavedDirectoryData()
-                  .getAll()
-                  .map((e) => SavedDirectoryTile(
-                        directory: e,
-                      ))
-                  .toList(),
+              children: directoryCards,
             ),
           );
         });

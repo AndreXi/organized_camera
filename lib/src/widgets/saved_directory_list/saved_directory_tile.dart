@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:organized_camera/src/models/saved_directory/saved_directory.dart';
 
 class SavedDirectoryTile extends StatelessWidget {
-  const SavedDirectoryTile({super.key, required this.directory});
+  const SavedDirectoryTile(
+      {super.key, required this.directory, required this.index});
 
+  final dynamic index;
   final SavedDirectory directory;
 
   @override

@@ -23,9 +23,9 @@ class _AddDirectoryFormState extends State<AddDirectoryForm> {
       final newDirectory = SavedDirectory(
           directory: _directoryController.text,
           name: _nameController.text,
-          iconId: availableIcons[iconIndex].hashCode);
+          iconId: availableIcons[iconIndex].icon?.codePoint ?? defaultIcon);
       final result = await SavedDirectoryData().create(newDirectory);
-      return result > 0;
+      return result >= 0;
     }
 
     void onSelectIconPressed() {

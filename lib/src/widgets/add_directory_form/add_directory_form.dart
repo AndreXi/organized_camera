@@ -1,3 +1,4 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:organized_camera/src/models/saved_directory/saved_directory.dart';
 import 'package:organized_camera/src/services/saved_directory_data.dart';
@@ -16,13 +17,20 @@ class _AddDirectoryFormState extends State<AddDirectoryForm> {
 
   @override
   Widget build(BuildContext context) {
-    void createDirectory() async {
-      final newDirectory = SavedDirectory(directory: '/sample');
+    Future<bool> createDirectory() async {
+      final newDirectory = SavedDirectory(
+          directory: directoryController.text, name: nameController.text);
       final result = await SavedDirectoryData().create(newDirectory);
-      debugPrint(result.toString());
+      return result > 0;
     }
 
     void onSelectIconPressed() {}
+
+    void onSelectDirectory() {
+      FilePicker.platform.getDirectoryPath().then((value) => setState(() {
+            directoryController.text = value ?? "";
+          }));
+    }
 
     void onCancel() {
       Navigator.of(context).pop();
@@ -30,12 +38,16 @@ class _AddDirectoryFormState extends State<AddDirectoryForm> {
 
     void onSubmit() {
       if (_formKey.currentState?.validate() == true) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Processing Data')),
-        );
+        createDirectory().then((result) {
+          if (result) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Directory added')),
+            );
+            Navigator.of(context).pop();
+          }
+        });
         return;
       }
-      debugPrint("Bad form");
     }
 
     Icon selectedIcon = Icon(
@@ -72,6 +84,7 @@ class _AddDirectoryFormState extends State<AddDirectoryForm> {
                         if (value == null || value.isEmpty) {
                           return "The profile name is required";
                         }
+                        return null;
                       },
                       autofocus: true,
                       decoration:
@@ -103,12 +116,13 @@ class _AddDirectoryFormState extends State<AddDirectoryForm> {
                         if (value == null || value.isEmpty) {
                           return "The directory is required";
                         }
+                        return null;
                       },
                     ),
                   ),
                   const SizedBox(width: 16.0),
                   TextButton(
-                      onPressed: createDirectory,
+                      onPressed: onSelectDirectory,
                       child: Row(
                         children: [
                           Icon(Icons.folder),

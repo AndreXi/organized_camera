@@ -13,6 +13,7 @@ class HomeView extends StatelessWidget {
     void openAddDirectoryForm() {
       showModalBottomSheet<void>(
         context: context,
+        isScrollControlled: true,
         builder: (BuildContext context) {
           return AddDirectoryForm();
         },

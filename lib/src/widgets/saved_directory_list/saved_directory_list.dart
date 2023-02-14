@@ -37,28 +37,30 @@ class _SavedDirectoryListState extends State<SavedDirectoryList> {
             cardStates[selectedIndex!] = true;
           }
 
-          return SizedBox(
-            height: 300,
-            child: GridView.count(
-              padding: const EdgeInsets.all(8.0),
-              mainAxisSpacing: 8.0,
-              crossAxisSpacing: 8.0,
-              crossAxisCount: nColumns,
-              children: directoryCards.asMap().entries.map((card) {
-                return ToggleButtons(
-                  fillColor: Theme.of(context).primaryColor,
-                  selectedColor: Colors.white,
-                  borderRadius: BorderRadius.circular(16.0),
-                  isSelected: [cardStates[card.key]],
-                  onPressed: (_) {
-                    setState(() {
-                      selectedIndex = card.key;
-                    });
-                    PreferencesData().setIndex(card.key);
-                  },
-                  children: [card.value],
-                );
-              }).toList(),
+          return Card(
+            child: SizedBox(
+              height: 300,
+              child: GridView.count(
+                padding: const EdgeInsets.all(8.0),
+                mainAxisSpacing: 8.0,
+                crossAxisSpacing: 8.0,
+                crossAxisCount: nColumns,
+                children: directoryCards.asMap().entries.map((card) {
+                  return ToggleButtons(
+                    fillColor: Theme.of(context).primaryColor,
+                    selectedColor: Colors.white,
+                    borderRadius: BorderRadius.circular(16.0),
+                    isSelected: [cardStates[card.key]],
+                    onPressed: (_) {
+                      setState(() {
+                        selectedIndex = card.key;
+                      });
+                      PreferencesData().setIndex(card.key);
+                    },
+                    children: [card.value],
+                  );
+                }).toList(),
+              ),
             ),
           );
         });

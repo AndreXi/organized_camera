@@ -34,29 +34,30 @@ void main() async {
   // Add test data TODO: remove
   final testDirectories = [
     SavedDirectory(
-        directory: "/sample", name: 'Test ${Random().nextInt(0xFFFFFF)}'),
+        directory: "/storage/emulated/0/Work",
+        name: 'Work ${Random().nextInt(0xFFF)}'),
     SavedDirectory(
-        directory: "/sample", name: 'Test ${Random().nextInt(0xFFFFFF)}'),
+        directory: "/sample", name: 'Test ${Random().nextInt(0xFFF)}'),
     SavedDirectory(
-        directory: "/sample", name: 'Test ${Random().nextInt(0xFFFFFF)}'),
+        directory: "/sample", name: 'Test ${Random().nextInt(0xFFF)}'),
     SavedDirectory(
-        directory: "/sample", name: 'Test ${Random().nextInt(0xFFFFFF)}'),
+        directory: "/sample", name: 'Test ${Random().nextInt(0xFFF)}'),
     SavedDirectory(
-        directory: "/sample", name: 'Test ${Random().nextInt(0xFFFFFF)}'),
+        directory: "/sample", name: 'Test ${Random().nextInt(0xFFF)}'),
     SavedDirectory(
-        directory: "/sample", name: 'Test ${Random().nextInt(0xFFFFFF)}'),
+        directory: "/sample", name: 'Test ${Random().nextInt(0xFFF)}'),
     SavedDirectory(
-        directory: "/sample", name: 'Test ${Random().nextInt(0xFFFFFF)}'),
+        directory: "/sample", name: 'Test ${Random().nextInt(0xFFF)}'),
     SavedDirectory(
-        directory: "/sample", name: 'Test ${Random().nextInt(0xFFFFFF)}'),
+        directory: "/sample", name: 'Test ${Random().nextInt(0xFFF)}'),
     SavedDirectory(
-        directory: "/sample", name: 'Test ${Random().nextInt(0xFFFFFF)}'),
+        directory: "/sample", name: 'Test ${Random().nextInt(0xFFF)}'),
     SavedDirectory(
-        directory: "/sample", name: 'Test ${Random().nextInt(0xFFFFFF)}'),
+        directory: "/sample", name: 'Test ${Random().nextInt(0xFFF)}'),
     SavedDirectory(
-        directory: "/sample", name: 'Test ${Random().nextInt(0xFFFFFF)}'),
+        directory: "/sample", name: 'Test ${Random().nextInt(0xFFF)}'),
     SavedDirectory(
-        directory: "/sample", name: 'Test ${Random().nextInt(0xFFFFFF)}'),
+        directory: "/sample", name: 'Test ${Random().nextInt(0xFFF)}'),
   ];
 
   directoriesBox.addAll(testDirectories);

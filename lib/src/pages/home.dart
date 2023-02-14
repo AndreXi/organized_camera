@@ -25,23 +25,26 @@ class HomeView extends StatelessWidget {
 
     return Scaffold(
         appBar: AppBar(title: const Text("Organized Camera")),
-        body: Column(
-          children: [
-            SavedDirectoryList(),
-            DirectoryInfo(
-              directoryProfile: SavedDirectory(directory: "/sample"),
-            ),
-            Spacer(),
-            TextButton.icon(
-                onPressed: openAddDirectoryForm,
-                icon: Icon(Icons.add),
-                label: Text('Add new save directory')),
-            ElevatedButton(
-              onPressed: () =>
-                  Navigator.of(context).pushNamed(CameraView.routeName),
-              child: Icon(Icons.camera),
-            )
-          ],
+        body: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              SavedDirectoryList(),
+              DirectoryInfo(
+                directoryProfile: SavedDirectory(directory: "/sample"),
+              ),
+              Spacer(),
+              TextButton.icon(
+                  onPressed: openAddDirectoryForm,
+                  icon: Icon(Icons.add),
+                  label: Text('Add new save directory')),
+              ElevatedButton(
+                onPressed: () =>
+                    Navigator.of(context).pushNamed(CameraView.routeName),
+                child: Icon(Icons.camera),
+              )
+            ],
+          ),
         ));
   }
 }

@@ -32,8 +32,7 @@ class DirectoryInfo extends StatelessWidget {
           final directoryProfile = SavedDirectoryData().getAll()[index];
 
           return Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 8.0, vertical: 16.0),
+            padding: const EdgeInsets.symmetric(vertical: 16.0),
             child: Card(
               child: Padding(
                 padding: const EdgeInsets.all(16.0),

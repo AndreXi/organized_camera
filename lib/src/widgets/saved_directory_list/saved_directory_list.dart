@@ -38,8 +38,8 @@ class _SavedDirectoryListState extends State<SavedDirectoryList> {
           }
 
           return Card(
-            child: SizedBox(
-              height: 300,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: GridView.count(
                 padding: const EdgeInsets.all(8.0),
                 mainAxisSpacing: 8.0,

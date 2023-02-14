@@ -27,23 +27,72 @@ class HomeView extends StatelessWidget {
         appBar: AppBar(title: const Text("Organized Camera")),
         body: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              SavedDirectoryList(),
-              DirectoryInfo(
-                directoryProfile: SavedDirectory(directory: "/sample"),
-              ),
-              Spacer(),
-              TextButton.icon(
-                  onPressed: openAddDirectoryForm,
-                  icon: Icon(Icons.add),
-                  label: Text('Add new save directory')),
-              ElevatedButton(
-                onPressed: () =>
-                    Navigator.of(context).pushNamed(CameraView.routeName),
-                child: Icon(Icons.camera),
-              )
-            ],
+          child: Center(
+            child: Column(
+              children: [
+                Expanded(
+                  flex: 6,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Text(
+                              "Select the directory:",
+                            ),
+                          ),
+                          TextButton.icon(
+                              onPressed: openAddDirectoryForm,
+                              icon: Icon(Icons.add),
+                              label: Text('Add new directory')),
+                        ],
+                      ),
+                      Expanded(child: SavedDirectoryList()),
+                      SizedBox(
+                        height: 8.0,
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  flex: 5,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Padding(
+                          padding: EdgeInsets.all(10.0),
+                          child: Text(
+                            "Directory info:",
+                          ),
+                        ),
+                      ),
+                      DirectoryInfo(),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: SizedBox(
+                    height: double.infinity,
+                    child: ElevatedButton(
+                        onPressed: () => Navigator.of(context)
+                            .pushNamed(CameraView.routeName),
+                        style: ElevatedButton.styleFrom(
+                          shape: const CircleBorder(),
+                        ),
+                        child: const Icon(
+                          Icons.photo_camera,
+                          size: 32.0,
+                        )),
+                  ),
+                ),
+              ],
+            ),
           ),
         ));
   }

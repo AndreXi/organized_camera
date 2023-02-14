@@ -12,18 +12,20 @@ class SavedDirectoryTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: double.infinity,
+      height: double.infinity,
       // clipBehavior: Clip.hardEdge,
       // decoration: BoxDecoration(color: Colors.lightGreenAccent),
       padding: const EdgeInsets.all(8.0),
       constraints: BoxConstraints(
-          maxWidth: MediaQuery.of(context).size.width / nColumns - 16.0,
-          maxHeight: MediaQuery.of(context).size.width / nColumns - 16.0),
+          maxWidth: MediaQuery.of(context).size.width / nColumns - 24.0,
+          maxHeight: MediaQuery.of(context).size.width / nColumns - 24.0),
       child: Column(
         children: [
           const Spacer(),
           Icon(
             IconData(directory.iconId, fontFamily: 'MaterialIcons'),
-            size: 42,
+            size: 36,
             // color: Theme.of(context).colorScheme.primary,
           ),
           const Spacer(),
@@ -32,6 +34,7 @@ class SavedDirectoryTile extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             textAlign: TextAlign.center,
             maxLines: 1,
+            textScaleFactor: 0.9,
           )
         ],
       ),

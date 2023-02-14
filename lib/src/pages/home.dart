@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:organized_camera/src/models/saved_directory/saved_directory.dart';
+import 'package:organized_camera/src/pages/camera/camera_view.dart';
 import 'package:organized_camera/src/services/saved_directory_data.dart';
 import 'package:organized_camera/src/widgets/add_directory_form/add_directory_form.dart';
 import 'package:organized_camera/src/widgets/directory_info/directory_info.dart';
@@ -34,7 +35,12 @@ class HomeView extends StatelessWidget {
             TextButton.icon(
                 onPressed: openAddDirectoryForm,
                 icon: Icon(Icons.add),
-                label: Text('Add new save directory'))
+                label: Text('Add new save directory')),
+            ElevatedButton(
+              onPressed: () =>
+                  Navigator.of(context).pushNamed(CameraView.routeName),
+              child: Icon(Icons.camera),
+            )
           ],
         ));
   }

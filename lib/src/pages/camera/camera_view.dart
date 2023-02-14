@@ -76,54 +76,53 @@ class _CameraContentState extends State<_CameraContent> {
 
   @override
   Widget build(BuildContext context) {
-    if (!controller.value.isInitialized) {
-      return Container();
-    }
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.black87,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           Expanded(
             flex: 9,
-            child: CameraPreview(
-              controller,
-            ),
+            child: controller.value.isInitialized
+                ? CameraPreview(
+                    controller,
+                  )
+                : const Center(child: CircularProgressIndicator()),
           ),
           Expanded(
             flex: 1,
-            child: Stack(
-              children: [
-                SizedBox(
-                  height: double.infinity,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      ElevatedButton(
-                          onPressed: goBack,
-                          child: const Icon(Icons.arrow_back)),
-                      const SizedBox(
-                        width: 16.0,
-                      ),
-                      SizedBox(
-                        height: double.infinity,
-                        child: ElevatedButton(
-                            onPressed: takePhoto,
-                            style: ElevatedButton.styleFrom(
-                              shape: const CircleBorder(),
-                            ),
-                            child: const Icon(Icons.photo_camera)),
-                      ),
-                      const SizedBox(
-                        width: 16.0,
-                      ),
-                      ElevatedButton(
-                          onPressed: changeCamera,
-                          child: const Icon(Icons.flip_camera_android)),
-                    ],
+            child: SizedBox(
+              height: double.infinity,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                      onPressed: goBack, child: const Icon(Icons.arrow_back)),
+                  const SizedBox(
+                    width: 16.0,
                   ),
-                )
-              ],
+                  SizedBox(
+                    height: double.infinity,
+                    child: ElevatedButton(
+                        onPressed:
+                            controller.value.isInitialized ? takePhoto : null,
+                        style: ElevatedButton.styleFrom(
+                          shape: const CircleBorder(),
+                        ),
+                        child: const Icon(
+                          Icons.photo_camera,
+                          size: 32.0,
+                        )),
+                  ),
+                  const SizedBox(
+                    width: 16.0,
+                  ),
+                  ElevatedButton(
+                      onPressed:
+                          controller.value.isInitialized ? changeCamera : null,
+                      child: const Icon(Icons.flip_camera_android)),
+                ],
+              ),
             ),
           ),
         ],

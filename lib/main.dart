@@ -22,8 +22,11 @@ void main() async {
 
   // Register Hive adapters
   Hive.registerAdapter(SavedDirectoryAdapter());
+
+  // Open hive boxes
   final directoriesBox =
       await Hive.openBox<SavedDirectory>("saved_directories");
+  await Hive.openBox<String>("preferences");
 
   // Clear box
   await directoriesBox.clear();

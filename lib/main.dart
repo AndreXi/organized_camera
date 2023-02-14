@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 import 'package:hive_flutter/hive_flutter.dart';
@@ -24,7 +26,37 @@ void main() async {
       await Hive.openBox<SavedDirectory>("saved_directories");
 
   // Clear box
-  directoriesBox.clear();
+  await directoriesBox.clear();
+
+  // Add test data TODO: remove
+  final testDirectories = [
+    SavedDirectory(
+        directory: "/sample", name: 'Test ${Random().nextInt(0xFFFFFF)}'),
+    SavedDirectory(
+        directory: "/sample", name: 'Test ${Random().nextInt(0xFFFFFF)}'),
+    SavedDirectory(
+        directory: "/sample", name: 'Test ${Random().nextInt(0xFFFFFF)}'),
+    SavedDirectory(
+        directory: "/sample", name: 'Test ${Random().nextInt(0xFFFFFF)}'),
+    SavedDirectory(
+        directory: "/sample", name: 'Test ${Random().nextInt(0xFFFFFF)}'),
+    SavedDirectory(
+        directory: "/sample", name: 'Test ${Random().nextInt(0xFFFFFF)}'),
+    SavedDirectory(
+        directory: "/sample", name: 'Test ${Random().nextInt(0xFFFFFF)}'),
+    SavedDirectory(
+        directory: "/sample", name: 'Test ${Random().nextInt(0xFFFFFF)}'),
+    SavedDirectory(
+        directory: "/sample", name: 'Test ${Random().nextInt(0xFFFFFF)}'),
+    SavedDirectory(
+        directory: "/sample", name: 'Test ${Random().nextInt(0xFFFFFF)}'),
+    SavedDirectory(
+        directory: "/sample", name: 'Test ${Random().nextInt(0xFFFFFF)}'),
+    SavedDirectory(
+        directory: "/sample", name: 'Test ${Random().nextInt(0xFFFFFF)}'),
+  ];
+
+  directoriesBox.addAll(testDirectories);
 
   // Run the app and pass in the SettingsController. The app listens to the
   // SettingsController for changes, then passes it further down to the

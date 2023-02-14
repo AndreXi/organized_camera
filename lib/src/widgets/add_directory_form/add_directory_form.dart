@@ -107,12 +107,12 @@ class _AddDirectoryFormState extends State<AddDirectoryForm> {
                     child: Card(
                       clipBehavior: Clip.hardEdge,
                       child: InkWell(
+                        onTap: onSelectIconPressed,
                         child: Icon(
                           availableIcons[iconIndex].icon,
                           color: Theme.of(context).primaryColor,
                           size: 24.0,
                         ),
-                        onTap: onSelectIconPressed,
                       ),
                     ),
                   )
@@ -126,6 +126,8 @@ class _AddDirectoryFormState extends State<AddDirectoryForm> {
                     child: TextFormField(
                       readOnly: true,
                       controller: _directoryController,
+                      decoration:
+                          const InputDecoration(label: Text("Directory")),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return "The directory is required";
@@ -137,11 +139,11 @@ class _AddDirectoryFormState extends State<AddDirectoryForm> {
                   const SizedBox(width: 16.0),
                   TextButton(
                       onPressed: onSelectDirectory,
-                      child: Row(
+                      child: const Row(
                         children: [
                           Icon(Icons.folder),
                           Padding(
-                            padding: const EdgeInsets.only(left: 8.0),
+                            padding: EdgeInsets.only(left: 8.0),
                             child: Text("Select directory"),
                           ),
                         ],

@@ -1,5 +1,10 @@
+import 'dart:io';
+
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:organized_camera/src/services/saved_directory_data.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class _CameraContent extends StatefulWidget {
   const _CameraContent({required this.cameras});
@@ -11,15 +16,42 @@ class _CameraContent extends StatefulWidget {
 }
 
 class _CameraContentState extends State<_CameraContent> {
-  late CameraController controller;
+  late CameraController _controller;
+
+  final String? _savePath = SavedDirectoryData().getCurrentDirectory();
+
   int selectedCamera = 0;
+  bool _cameraBusy = false;
 
   void goBack() {
     Navigator.of(context).pop();
   }
 
-  void takePhoto() {
-    controller.takePicture();
+  void takePhoto() async {
+    final dir = await getApplicationDocumentsDirectory();
+    await Permission.manageExternalStorage.request();
+
+    setState(() {
+      _cameraBusy = true;
+    });
+    final image = await _controller.takePicture();
+    await _controller.pausePreview();
+
+    // Save to path
+    if (_savePath != null) {
+      // final targetPath = "${dir?.path}/${image.name}";
+      final dire = await Directory(_savePath!).create(recursive: true);
+      final targetPath = "$_savePath/${image.name}";
+      final file = await File(targetPath).create(recursive: true);
+      await file.writeAsBytes(await image.readAsBytes(),
+          mode: FileMode.writeOnly);
+      // await image.saveTo(targetPath);
+    }
+
+    await _controller.resumePreview();
+    setState(() {
+      _cameraBusy = false;
+    });
   }
 
   void changeCamera() {
@@ -34,14 +66,15 @@ class _CameraContentState extends State<_CameraContent> {
 
     setState(() {
       selectedCamera = newSelectedCamera;
-      controller = CameraController(
+      _cameraBusy = false;
+      _controller = CameraController(
           widget.cameras[selectedCamera], ResolutionPreset.max);
       handleControllerInit();
     });
   }
 
   void handleControllerInit() {
-    controller.initialize().then((_) {
+    _controller.initialize().then((_) {
       if (!mounted) {
         return;
       }
@@ -63,14 +96,14 @@ class _CameraContentState extends State<_CameraContent> {
   @override
   void initState() {
     super.initState();
-    controller =
+    _controller =
         CameraController(widget.cameras[selectedCamera], ResolutionPreset.max);
     handleControllerInit();
   }
 
   @override
   void dispose() {
-    controller.dispose();
+    _controller.dispose();
     super.dispose();
   }
 
@@ -83,9 +116,11 @@ class _CameraContentState extends State<_CameraContent> {
         children: [
           Expanded(
             flex: 9,
-            child: controller.value.isInitialized
-                ? CameraPreview(
-                    controller,
+            child: _controller.value.isInitialized
+                ? Center(
+                    child: CameraPreview(
+                      _controller,
+                    ),
                   )
                 : const Center(child: CircularProgressIndicator()),
           ),
@@ -103,23 +138,33 @@ class _CameraContentState extends State<_CameraContent> {
                   ),
                   SizedBox(
                     height: double.infinity,
-                    child: ElevatedButton(
-                        onPressed:
-                            controller.value.isInitialized ? takePhoto : null,
-                        style: ElevatedButton.styleFrom(
-                          shape: const CircleBorder(),
-                        ),
-                        child: const Icon(
-                          Icons.photo_camera,
-                          size: 32.0,
-                        )),
+                    child: !_cameraBusy
+                        ? ElevatedButton(
+                            onPressed: _controller.value.isInitialized
+                                ? takePhoto
+                                : null,
+                            style: ElevatedButton.styleFrom(
+                              shape: const CircleBorder(),
+                            ),
+                            child: const Icon(
+                              Icons.photo_camera,
+                              size: 32.0,
+                            ))
+                        : ElevatedButton(
+                            onPressed: () {},
+                            style: ElevatedButton.styleFrom(
+                              shape: const CircleBorder(),
+                            ),
+                            child: const Center(
+                              child: CircularProgressIndicator(),
+                            )),
                   ),
                   const SizedBox(
                     width: 16.0,
                   ),
                   ElevatedButton(
                       onPressed:
-                          controller.value.isInitialized ? changeCamera : null,
+                          _controller.value.isInitialized ? changeCamera : null,
                       child: const Icon(Icons.flip_camera_android)),
                 ],
               ),
@@ -141,10 +186,27 @@ class CameraView extends StatelessWidget {
     return FutureBuilder(
         future: availableCameras(),
         builder: (context, snapshot) {
-          if (snapshot.hasData) {
+          if (snapshot.connectionState == ConnectionState.done) {
             return _CameraContent(cameras: snapshot.data ?? []);
           }
-          return Container();
+          return const Center(child: CircularProgressIndicator());
         });
+  }
+}
+
+// A widget that displays the picture taken by the user.
+class DisplayPictureScreen extends StatelessWidget {
+  final String imagePath;
+
+  const DisplayPictureScreen({super.key, required this.imagePath});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Display the Picture')),
+      // The image is stored as a file on the device. Use the `Image.file`
+      // constructor with the given path to display the image.
+      body: Image.file(File(imagePath)),
+    );
   }
 }

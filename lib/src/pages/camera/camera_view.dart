@@ -29,7 +29,6 @@ class _CameraContentState extends State<_CameraContent> {
 
   void takePhoto() async {
     final dir = await getApplicationDocumentsDirectory();
-    await Permission.manageExternalStorage.request();
 
     setState(() {
       _cameraBusy = true;

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:organized_camera/src/pages/camera/camera_view.dart';
 import 'package:organized_camera/src/widgets/add_directory_form/add_directory_form.dart';
 import 'package:organized_camera/src/widgets/directory_info/directory_info.dart';
+import 'package:organized_camera/src/widgets/open_camera_button/open_camera_button.dart';
 import 'package:organized_camera/src/widgets/saved_directory_list/saved_directory_list.dart';
 
 class HomeView extends StatelessWidget {
@@ -77,16 +77,7 @@ class HomeView extends StatelessWidget {
                   flex: 2,
                   child: SizedBox(
                     height: double.infinity,
-                    child: ElevatedButton(
-                        onPressed: () => Navigator.of(context)
-                            .pushNamed(CameraView.routeName),
-                        style: ElevatedButton.styleFrom(
-                          shape: const CircleBorder(),
-                        ),
-                        child: const Icon(
-                          Icons.photo_camera,
-                          size: 32.0,
-                        )),
+                    child: OpenCameraButton(),
                   ),
                 ),
               ],

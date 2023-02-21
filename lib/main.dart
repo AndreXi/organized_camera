@@ -26,10 +26,11 @@ void main() async {
   // Open hive boxes
   final directoriesBox =
       await Hive.openBox<SavedDirectory>("saved_directories");
-  await Hive.openBox<String>("preferences");
+  final prefBox = await Hive.openBox<String>("preferences");
 
   // Clear box
   await directoriesBox.clear();
+  await prefBox.clear();
 
   // Add test data TODO: remove
   final testDirectories = [

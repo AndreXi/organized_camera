@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:organized_camera/src/models/saved_directory/saved_directory.dart';
 import 'package:organized_camera/src/services/preferences_data.dart';
 import 'package:organized_camera/src/services/saved_directory_data.dart';
 
@@ -39,7 +38,7 @@ class DirectoryInfo extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.baseline,
                       textBaseline: TextBaseline.alphabetic,
                       children: [
-                        Text(
+                        const Text(
                           "Profile:",
                         ),
                         Expanded(
@@ -52,10 +51,10 @@ class DirectoryInfo extends StatelessWidget {
                         )
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 16.0,
                     ),
-                    Align(
+                    const Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
                         "The photos will be saved in:",

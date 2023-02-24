@@ -28,7 +28,7 @@ class _SavedDirectoryListState extends State<SavedDirectoryList> {
           int index = 0;
           directoriesMap.forEach((key, value) {
             directoryCards.add(SavedDirectoryTile(
-              directory: value,
+              directoryProfile: value,
               index: index,
             ));
             index++;

@@ -17,24 +17,26 @@ class SavedDirectoryList extends StatefulWidget {
 class _SavedDirectoryListState extends State<SavedDirectoryList> {
   @override
   Widget build(BuildContext context) {
-    int? selectedIndex = PreferencesData().getIndex();
-
     return ValueListenableBuilder(
         valueListenable:
             Hive.box<SavedDirectory>("saved_directories").listenable(),
         builder: (context, Box<SavedDirectory> box, _) {
+          int? selectedIndex = PreferencesData().getIndex();
           final directoriesMap = SavedDirectoryData().getAllMap();
 
           final List<SavedDirectoryTile> directoryCards = [];
-          directoriesMap
-              .forEach((key, value) => directoryCards.add(SavedDirectoryTile(
-                    directory: value,
-                    index: key,
-                  )));
+          int index = 0;
+          directoriesMap.forEach((key, value) {
+            directoryCards.add(SavedDirectoryTile(
+              directory: value,
+              index: index,
+            ));
+            index++;
+          });
 
           final cardStates = List.filled(directoryCards.length, false);
           if (selectedIndex != null) {
-            cardStates[selectedIndex!] = true;
+            cardStates[selectedIndex] = true;
           }
 
           return Card(

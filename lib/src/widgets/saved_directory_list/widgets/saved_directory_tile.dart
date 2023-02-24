@@ -20,10 +20,13 @@ class SavedDirectoryTile extends StatelessWidget {
     }
 
     void onDeletePressed() {
-      final selectedIndex = PreferencesData().getIndex();
+      final selectedIndex = PreferencesData().getIndex() ?? 0;
       if (selectedIndex == index) {
         PreferencesData().resetIndex();
+      } else {
+        PreferencesData().moveIndex(selectedIndex > index ? -1 : 0);
       }
+
       directory.delete();
       Navigator.of(context).pop();
     }
@@ -39,12 +42,12 @@ class SavedDirectoryTile extends StatelessWidget {
                   children: [
                     ListTile(
                       onTap: onEditPressed,
-                      title: Text("Edit"),
+                      title: const Text("Edit"),
                       // style: actionsBtnStyle,
                     ),
                     ListTile(
                       onTap: onDeletePressed,
-                      title: Text("Delete"),
+                      title: const Text("Delete"),
                       // style: actionsBtnStyle,
                     ),
                   ],

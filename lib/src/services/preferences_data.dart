@@ -11,4 +11,8 @@ class PreferencesData {
   void setIndex(int index) {
     box.put("index", index.toString());
   }
+
+  void resetIndex() {
+    box.delete("index");
+  }
 }

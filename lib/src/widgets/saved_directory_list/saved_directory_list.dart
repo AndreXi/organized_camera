@@ -3,7 +3,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:organized_camera/src/models/saved_directory/saved_directory.dart';
 import 'package:organized_camera/src/services/preferences_data.dart';
 import 'package:organized_camera/src/services/saved_directory_data.dart';
-import 'package:organized_camera/src/widgets/saved_directory_list/saved_directory_tile.dart';
+import 'package:organized_camera/src/widgets/saved_directory_list/widgets/saved_directory_tile.dart';
 
 const int nColumns = 4;
 

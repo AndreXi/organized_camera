@@ -3,8 +3,6 @@ import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:organized_camera/src/services/saved_directory_data.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 class _CameraContent extends StatefulWidget {
   const _CameraContent({required this.cameras});
@@ -28,8 +26,6 @@ class _CameraContentState extends State<_CameraContent> {
   }
 
   void takePhoto() async {
-    final dir = await getApplicationDocumentsDirectory();
-
     setState(() {
       _cameraBusy = true;
     });
@@ -39,12 +35,24 @@ class _CameraContentState extends State<_CameraContent> {
     // Save to path
     if (_savePath != null) {
       // final targetPath = "${dir?.path}/${image.name}";
-      final dire = await Directory(_savePath!).create(recursive: true);
+
+      try {
+        await Directory(_savePath!).create(recursive: true);
+      } on OSError catch (_) {
+        () {
+          showDialog(
+              context: context,
+              builder: (context) => const AlertDialog(
+                    title: Text("OS Error"),
+                    content: Text(
+                        "The selected path has write protection by system, check if the application has directory access permissions or select other directory to save it."),
+                  ));
+        }();
+      }
       final targetPath = "$_savePath/${image.name}";
       final file = await File(targetPath).create(recursive: true);
       await file.writeAsBytes(await image.readAsBytes(),
           mode: FileMode.writeOnly);
-      // await image.saveTo(targetPath);
     }
 
     await _controller.resumePreview();

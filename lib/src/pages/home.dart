@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:organized_camera/src/layout/home_layout.dart';
 import 'package:organized_camera/src/widgets/add_directory_form/add_directory_form.dart';
 import 'package:organized_camera/src/widgets/directory_info/directory_info.dart';
 import 'package:organized_camera/src/widgets/open_camera_button/open_camera_button.dart';
@@ -16,73 +17,51 @@ class HomeView extends StatelessWidget {
         context: context,
         isScrollControlled: true,
         builder: (BuildContext context) {
-          return AddDirectoryForm();
+          return const AddDirectoryForm();
         },
       );
     }
 
     return Scaffold(
         appBar: AppBar(title: const Text("Organized Camera")),
-        body: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Center(
-            child: Column(
-              children: [
-                Expanded(
-                  flex: 6,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Text(
-                              "Select the directory:",
-                            ),
-                          ),
-                          TextButton.icon(
-                              onPressed: openAddDirectoryForm,
-                              icon: Icon(Icons.add),
-                              label: Text('Add new directory')),
-                        ],
-                      ),
-                      Expanded(child: SavedDirectoryList()),
-                      SizedBox(
-                        height: 8.0,
-                      ),
-                    ],
+        body: HomeLayout(
+          directorySelector: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.all(10.0),
+                    child: Text(
+                      "Select the directory:",
+                    ),
                   ),
-                ),
-                Expanded(
-                  flex: 5,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Padding(
-                          padding: EdgeInsets.all(10.0),
-                          child: Text(
-                            "Directory info:",
-                          ),
-                        ),
-                      ),
-                      DirectoryInfo(),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  flex: 2,
-                  child: SizedBox(
-                    height: double.infinity,
-                    child: OpenCameraButton(),
-                  ),
-                ),
-              ],
-            ),
+                  TextButton.icon(
+                      onPressed: openAddDirectoryForm,
+                      icon: const Icon(Icons.add),
+                      label: const Text('Add new directory')),
+                ],
+              ),
+              const Expanded(child: SavedDirectoryList()),
+            ],
           ),
+          directoryInfo: const Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding: EdgeInsets.only(left: 10.0, bottom: 10.0),
+                  child: Text(
+                    "Directory info:",
+                  ),
+                ),
+              ),
+              DirectoryInfo(),
+            ],
+          ),
+          cameraButton: const OpenCameraButton(),
         ));
   }
 }

@@ -76,8 +76,8 @@ class OpenCameraButton extends StatelessWidget {
         return ElevatedButton(
             onPressed: isDirectorySelected ? onOpenCameraPressed : null,
             style: ElevatedButton.styleFrom(
-              shape: const CircleBorder(),
-            ),
+                shape: const CircleBorder(),
+                minimumSize: const Size.square(64.0)),
             child: const Icon(
               Icons.photo_camera,
               size: 32.0,

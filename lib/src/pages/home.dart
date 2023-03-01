@@ -52,7 +52,7 @@ class HomeView extends StatelessWidget {
               Align(
                 alignment: Alignment.centerLeft,
                 child: Padding(
-                  padding: EdgeInsets.only(left: 10.0, bottom: 10.0),
+                  padding: EdgeInsets.only(left: 10.0, bottom: 14.0),
                   child: Text(
                     "Directory info:",
                   ),

@@ -26,19 +26,28 @@ class _DirectoryInfoState extends State<DirectoryInfo> {
     }
 
     Hive.box<String>("preferences").listenable().addListener(() {
-      setState(() {
-        _index = PreferencesData().getIndex();
-        _directoryProfile = SavedDirectoryData().getAll()[_index!];
-      });
+      if (mounted) {
+        setState(() {
+          _index = PreferencesData().getIndex();
+          _directoryProfile = SavedDirectoryData().getAll()[_index!];
+        });
+      }
     });
 
     Hive.box<SavedDirectory>("saved_directories").listenable().addListener(() {
-      setState(() {
-        if (_index != null) {
-          _directoryProfile = SavedDirectoryData().getAll()[_index!];
-        }
-      });
+      if (mounted) {
+        setState(() {
+          if (_index != null) {
+            _directoryProfile = SavedDirectoryData().getAll()[_index!];
+          }
+        });
+      }
     });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
@@ -63,6 +72,7 @@ class _DirectoryInfoState extends State<DirectoryInfo> {
         padding: const EdgeInsets.all(16.0),
         child: SizedBox(
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

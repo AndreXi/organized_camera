@@ -2,17 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:organized_camera/src/models/saved_directory/saved_directory.dart';
 import 'package:organized_camera/src/services/preferences_data.dart';
 import 'package:organized_camera/src/widgets/edit_directory_form/edit_directory_form.dart';
-import 'package:organized_camera/src/widgets/saved_directory_list/saved_directory_list.dart';
-
-final ButtonStyle actionsBtnStyle = TextButton.styleFrom(
-    minimumSize: Size.fromHeight(24.0), padding: EdgeInsets.all(0));
 
 class SavedDirectoryTile extends StatelessWidget {
   const SavedDirectoryTile(
-      {super.key, required this.directoryProfile, required this.index});
+      {super.key,
+      required this.directoryProfile,
+      required this.index,
+      required this.onPressed,
+      required this.isSelected});
 
   final dynamic index;
   final SavedDirectory directoryProfile;
+  final Function(int) onPressed;
+  final bool isSelected;
 
   @override
   Widget build(BuildContext context) {
@@ -63,26 +65,30 @@ class SavedDirectoryTile extends StatelessWidget {
               ));
     }
 
-    return Container(
-      width: double.infinity,
-      height: double.infinity,
-      // clipBehavior: Clip.hardEdge,
-      // decoration: BoxDecoration(color: Colors.lightGreenAccent),
-      padding: const EdgeInsets.all(8.0),
-      constraints: BoxConstraints(
-          maxWidth: MediaQuery.of(context).size.width / nColumns - 24.0,
-          maxHeight: MediaQuery.of(context).size.width / nColumns - 24.0),
-      child: GestureDetector(
-        onLongPress: showTileActions,
+    final selectedStyle = ElevatedButton.styleFrom(
+        backgroundColor: Theme.of(context).primaryColor,
+        foregroundColor: Colors.white,
+        padding: const EdgeInsets.all(8.0),
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10.0))));
+
+    final normalStyle = ElevatedButton.styleFrom(
+        padding: const EdgeInsets.all(8.0),
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10.0))));
+
+    return ElevatedButton(
+      style: isSelected ? selectedStyle : normalStyle,
+      onPressed: () => onPressed(index),
+      onLongPress: showTileActions,
+      child: SizedBox.expand(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            const Spacer(),
             Icon(
               IconData(directoryProfile.iconId, fontFamily: 'MaterialIcons'),
               size: 36,
-              // color: Theme.of(context).colorScheme.primary,
             ),
-            const Spacer(),
             Text(
               directoryProfile.name,
               overflow: TextOverflow.ellipsis,

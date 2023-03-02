@@ -42,10 +42,15 @@ class _CameraContentState extends State<_CameraContent> {
         () {
           showDialog(
               context: context,
-              builder: (context) => const AlertDialog(
-                    title: Text("OS Error"),
-                    content: Text(
+              builder: (context) => AlertDialog(
+                    title: const Text("OS Error"),
+                    content: const Text(
                         "The selected path has write protection by system, check if the application has directory access permissions or select other directory to save it."),
+                    actions: [
+                      TextButton(
+                          onPressed: () => Navigator.of(context).pop(),
+                          child: const Text("Ok"))
+                    ],
                   ));
         }();
       }
@@ -90,10 +95,31 @@ class _CameraContentState extends State<_CameraContent> {
       if (e is CameraException) {
         switch (e.code) {
           case 'CameraAccessDenied':
-            // Handle access errors here.
+            showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                      title: const Text("OS Error"),
+                      content: const Text(
+                          "Camera access denied, check app permissions."),
+                      actions: [
+                        TextButton(
+                            onPressed: () => Navigator.of(context).pop(),
+                            child: const Text("Ok"))
+                      ],
+                    ));
             break;
           default:
-            // Handle other errors here.
+            showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                      title: const Text("OS Error"),
+                      content: const Text("Unknown camera error"),
+                      actions: [
+                        TextButton(
+                            onPressed: () => Navigator.of(context).pop(),
+                            child: const Text("Ok"))
+                      ],
+                    ));
             break;
         }
       }
@@ -116,68 +142,71 @@ class _CameraContentState extends State<_CameraContent> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black87,
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          Expanded(
-            flex: 9,
-            child: _controller.value.isInitialized
-                ? Center(
-                    child: CameraPreview(
-                      _controller,
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: Colors.black87,
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Expanded(
+              flex: 9,
+              child: _controller.value.isInitialized
+                  ? Center(
+                      child: CameraPreview(
+                        _controller,
+                      ),
+                    )
+                  : const Center(child: CircularProgressIndicator()),
+            ),
+            Expanded(
+              flex: 1,
+              child: SizedBox(
+                height: double.infinity,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ElevatedButton(
+                        onPressed: goBack, child: const Icon(Icons.arrow_back)),
+                    const SizedBox(
+                      width: 16.0,
                     ),
-                  )
-                : const Center(child: CircularProgressIndicator()),
-          ),
-          Expanded(
-            flex: 1,
-            child: SizedBox(
-              height: double.infinity,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ElevatedButton(
-                      onPressed: goBack, child: const Icon(Icons.arrow_back)),
-                  const SizedBox(
-                    width: 16.0,
-                  ),
-                  SizedBox(
-                    height: double.infinity,
-                    child: !_cameraBusy
-                        ? ElevatedButton(
-                            onPressed: _controller.value.isInitialized
-                                ? takePhoto
-                                : null,
-                            style: ElevatedButton.styleFrom(
-                              shape: const CircleBorder(),
-                            ),
-                            child: const Icon(
-                              Icons.photo_camera,
-                              size: 32.0,
-                            ))
-                        : ElevatedButton(
-                            onPressed: () {},
-                            style: ElevatedButton.styleFrom(
-                              shape: const CircleBorder(),
-                            ),
-                            child: const Center(
-                              child: CircularProgressIndicator(),
-                            )),
-                  ),
-                  const SizedBox(
-                    width: 16.0,
-                  ),
-                  ElevatedButton(
-                      onPressed:
-                          _controller.value.isInitialized ? changeCamera : null,
-                      child: const Icon(Icons.flip_camera_android)),
-                ],
+                    SizedBox(
+                      height: double.infinity,
+                      child: !_cameraBusy
+                          ? ElevatedButton(
+                              onPressed: _controller.value.isInitialized
+                                  ? takePhoto
+                                  : null,
+                              style: ElevatedButton.styleFrom(
+                                shape: const CircleBorder(),
+                              ),
+                              child: const Icon(
+                                Icons.photo_camera,
+                                size: 32.0,
+                              ))
+                          : ElevatedButton(
+                              onPressed: () {},
+                              style: ElevatedButton.styleFrom(
+                                shape: const CircleBorder(),
+                              ),
+                              child: const Center(
+                                child: CircularProgressIndicator(),
+                              )),
+                    ),
+                    const SizedBox(
+                      width: 16.0,
+                    ),
+                    ElevatedButton(
+                        onPressed: _controller.value.isInitialized
+                            ? changeCamera
+                            : null,
+                        child: const Icon(Icons.flip_camera_android)),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

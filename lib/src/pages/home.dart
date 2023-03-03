@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:organized_camera/src/layout/home_layout.dart';
 import 'package:organized_camera/src/widgets/add_directory_form/add_directory_form.dart';
+import 'package:organized_camera/src/widgets/app_info/app_info.dart';
 import 'package:organized_camera/src/widgets/directory_info/directory_info.dart';
 import 'package:organized_camera/src/widgets/open_camera_button/open_camera_button.dart';
 import 'package:organized_camera/src/widgets/saved_directory_list/saved_directory_list.dart';
@@ -23,7 +24,10 @@ class HomeView extends StatelessWidget {
     }
 
     return Scaffold(
-        appBar: AppBar(title: const Text("Organized Camera")),
+        appBar: AppBar(
+          title: const Text("Organized Camera"),
+          actions: const [AppInfoButton()],
+        ),
         body: HomeLayout(
           directorySelector: Column(
             mainAxisSize: MainAxisSize.min,

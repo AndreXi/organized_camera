@@ -28,6 +28,7 @@ dev_dependencies:
   flutter_lints: ^2.0.0
   build_runner:
   hive_generator:
+  package_rename: ^1.0.0+1
 
 flutter:
   uses-material-design: true

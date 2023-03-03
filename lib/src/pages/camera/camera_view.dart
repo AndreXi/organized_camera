@@ -2,7 +2,12 @@ import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:organized_camera/src/layout/camera_layout.dart';
 import 'package:organized_camera/src/services/saved_directory_data.dart';
+import 'package:organized_camera/src/widgets/camera_buttons/camera_buttons.dart';
+import 'package:organized_camera/src/widgets/camera_buttons/widgets/camera_back_button.dart';
+import 'package:organized_camera/src/widgets/camera_buttons/widgets/camera_flip_button.dart';
+import 'package:organized_camera/src/widgets/camera_buttons/widgets/camera_shot_button.dart';
 
 class _CameraContent extends StatefulWidget {
   const _CameraContent({required this.cameras});
@@ -145,70 +150,105 @@ class _CameraContentState extends State<_CameraContent> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.black87,
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Expanded(
-              flex: 9,
-              child: _controller.value.isInitialized
-                  ? Center(
-                      child: CameraPreview(
-                        _controller,
-                      ),
-                    )
-                  : const Center(child: CircularProgressIndicator()),
+        body: CameraLayout(
+          cameraPreview: _controller.value.isInitialized
+              ? Center(
+                  child: CameraPreview(
+                    _controller,
+                  ),
+                )
+              : const Center(child: CircularProgressIndicator()),
+          cameraControls: CameraButtons(
+            backButton: CameraBackButton(onPressed: goBack),
+            shotButton: CameraShotButton(
+              cameraBusy: _cameraBusy,
+              onPressed: takePhoto,
             ),
-            Expanded(
-              flex: 1,
-              child: SizedBox(
-                height: double.infinity,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ElevatedButton(
-                        onPressed: goBack, child: const Icon(Icons.arrow_back)),
-                    const SizedBox(
-                      width: 16.0,
-                    ),
-                    SizedBox(
-                      height: double.infinity,
-                      child: !_cameraBusy
-                          ? ElevatedButton(
-                              onPressed: _controller.value.isInitialized
-                                  ? takePhoto
-                                  : null,
-                              style: ElevatedButton.styleFrom(
-                                shape: const CircleBorder(),
-                              ),
-                              child: const Icon(
-                                Icons.photo_camera,
-                                size: 32.0,
-                              ))
-                          : ElevatedButton(
-                              onPressed: () {},
-                              style: ElevatedButton.styleFrom(
-                                shape: const CircleBorder(),
-                              ),
-                              child: const Center(
-                                child: CircularProgressIndicator(),
-                              )),
-                    ),
-                    const SizedBox(
-                      width: 16.0,
-                    ),
-                    ElevatedButton(
-                        onPressed: _controller.value.isInitialized
-                            ? changeCamera
-                            : null,
-                        child: const Icon(Icons.flip_camera_android)),
-                  ],
-                ),
-              ),
+            flipButton: CameraFlipButton(
+              onPressed: _controller.value.isInitialized ? changeCamera : null,
             ),
-          ],
+          ),
+          cameraControlsV: CameraButtonsV(
+            backButton: CameraBackButton(onPressed: goBack),
+            shotButton: CameraShotButton(
+              cameraBusy: _cameraBusy,
+              onPressed: takePhoto,
+            ),
+            flipButton: CameraFlipButton(
+              onPressed: _controller.value.isInitialized ? changeCamera : null,
+            ),
+          ),
         ),
       ),
     );
+
+    // return SafeArea(
+    //   child: Scaffold(
+    //     backgroundColor: Colors.black87,
+    //     body: Column(
+    //       mainAxisAlignment: MainAxisAlignment.end,
+    //       children: [
+    //         Expanded(
+    //           flex: 9,
+    //           child: _controller.value.isInitialized
+    //               ? Center(
+    //                   child: CameraPreview(
+    //                     _controller,
+    //                   ),
+    //                 )
+    //               : const Center(child: CircularProgressIndicator()),
+    //         ),
+    //         Expanded(
+    //           flex: 1,
+    //           child: SizedBox(
+    //             height: double.infinity,
+    //             child: Row(
+    //               mainAxisAlignment: MainAxisAlignment.center,
+    //               children: [
+    //                 ElevatedButton(
+    //                     onPressed: goBack, child: const Icon(Icons.arrow_back)),
+    //                 const SizedBox(
+    //                   width: 16.0,
+    //                 ),
+    //                 SizedBox(
+    //                   height: double.infinity,
+    //                   child: !_cameraBusy
+    //                       ? ElevatedButton(
+    //                           onPressed: _controller.value.isInitialized
+    //                               ? takePhoto
+    //                               : null,
+    //                           style: ElevatedButton.styleFrom(
+    //                             shape: const CircleBorder(),
+    //                           ),
+    //                           child: const Icon(
+    //                             Icons.photo_camera,
+    //                             size: 32.0,
+    //                           ))
+    //                       : ElevatedButton(
+    //                           onPressed: () {},
+    //                           style: ElevatedButton.styleFrom(
+    //                             shape: const CircleBorder(),
+    //                           ),
+    //                           child: const Center(
+    //                             child: CircularProgressIndicator(),
+    //                           )),
+    //                 ),
+    //                 const SizedBox(
+    //                   width: 16.0,
+    //                 ),
+    //                 ElevatedButton(
+    //                     onPressed: _controller.value.isInitialized
+    //                         ? changeCamera
+    //                         : null,
+    //                     child: const Icon(Icons.flip_camera_android)),
+    //               ],
+    //             ),
+    //           ),
+    //         ),
+    //       ],
+    //     ),
+    //   ),
+    // );
   }
 }
 

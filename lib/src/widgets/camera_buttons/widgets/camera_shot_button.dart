@@ -16,12 +16,15 @@ class CameraShotButton extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           shape: const CircleBorder(),
         ),
-        child: !cameraBusy
-            ? const Icon(
-                Icons.photo_camera,
-                size: 32.0,
-              )
-            : const Center(child: CircularProgressIndicator()),
+        child: SizedBox.square(
+          dimension: 32.0,
+          child: !cameraBusy
+              ? const Icon(
+                  Icons.photo_camera,
+                  size: 32.0,
+                )
+              : const Center(child: CircularProgressIndicator()),
+        ),
       ),
     );
   }

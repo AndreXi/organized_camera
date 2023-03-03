@@ -2,6 +2,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:organized_camera/src/models/saved_directory/saved_directory.dart';
 import 'package:organized_camera/src/widgets/select_icon_dialog/select_icon_dialog.dart';
+import 'package:organized_camera/src/widgets/select_icon_dialog/widgets/open_select_icon_dialog.dart';
 
 class EditDirectoryForm extends StatefulWidget {
   const EditDirectoryForm({super.key, required this.directoryProfile});
@@ -110,20 +111,10 @@ class _EditDirectoryFormState extends State<EditDirectoryForm> {
                     ),
                   ),
                   const SizedBox(width: 16.0),
-                  SizedBox.fromSize(
-                    size: const Size.square(56.0),
-                    child: Card(
-                      clipBehavior: Clip.hardEdge,
-                      child: InkWell(
-                        onTap: onSelectIconPressed,
-                        child: Icon(
-                          availableIcons[iconIndex].icon,
-                          color: Theme.of(context).primaryColor,
-                          size: 24.0,
-                        ),
-                      ),
-                    ),
-                  )
+                  OpenSelectIconDialog(
+                    onSelectIconPressed: onSelectIconPressed,
+                    iconIndex: iconIndex,
+                  ),
                 ],
               ),
               Row(

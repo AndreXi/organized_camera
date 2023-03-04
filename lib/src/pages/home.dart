@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:organized_camera/src/layout/home_layout.dart';
+import 'package:organized_camera/src/localization/l10n.dart';
 import 'package:organized_camera/src/widgets/add_directory_form/add_directory_form.dart';
 import 'package:organized_camera/src/widgets/app_info/app_info.dart';
 import 'package:organized_camera/src/widgets/directory_info/directory_info.dart';
 import 'package:organized_camera/src/widgets/open_camera_button/open_camera_button.dart';
 import 'package:organized_camera/src/widgets/saved_directory_list/saved_directory_list.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
@@ -14,7 +14,7 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final t = AppLocalizations.of(context);
+    final t = Localization(context).translations;
 
     void openAddDirectoryForm() {
       showModalBottomSheet<void>(

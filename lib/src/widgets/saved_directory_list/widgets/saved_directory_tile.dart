@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:organized_camera/src/localization/l10n.dart';
 import 'package:organized_camera/src/models/saved_directory/saved_directory.dart';
 import 'package:organized_camera/src/services/preferences_data.dart';
 import 'package:organized_camera/src/widgets/edit_directory_form/edit_directory_form.dart';
@@ -18,6 +19,8 @@ class SavedDirectoryTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t = Localization(context).translations;
+
     void onEditPressed() {
       Navigator.of(context).pop();
       showModalBottomSheet<void>(
@@ -54,11 +57,12 @@ class SavedDirectoryTile extends StatelessWidget {
                   children: [
                     ListTile(
                       onTap: onEditPressed,
-                      title: const Text("Edit"),
+                      title: Text(t?.savedDirectoryTileActionsEdit ?? "Edit"),
                     ),
                     ListTile(
                       onTap: onDeletePressed,
-                      title: const Text("Delete"),
+                      title:
+                          Text(t?.savedDirectoryTileActionsDelete ?? "Delete"),
                     ),
                   ],
                 ),

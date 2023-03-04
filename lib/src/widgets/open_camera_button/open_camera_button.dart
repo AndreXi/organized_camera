@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:organized_camera/src/localization/l10n.dart';
 import 'package:organized_camera/src/pages/camera/camera_view.dart';
 import 'package:organized_camera/src/services/preferences_data.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -11,6 +12,8 @@ class OpenCameraButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t = Localization(context).translations;
+
     return ValueListenableBuilder(
       valueListenable: Hive.box<String>("preferences").listenable(),
       builder: (context, _, __) {
@@ -36,8 +39,10 @@ class OpenCameraButton extends StatelessWidget {
             () {
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                   content: Text(status.isDenied
-                      ? "Permissions denied by user"
-                      : "Permission denied permanently, change this in settings")));
+                      ? t?.openCameraPermissionsRequestDenied ??
+                          "Permissions denied by user"
+                      : t?.openCameraPermissionsRequestDeniedPermanently ??
+                          "Permission denied permanently, change this in settings")));
             }();
           }
         }
@@ -47,17 +52,18 @@ class OpenCameraButton extends StatelessWidget {
               context: context,
               builder: (ctx) {
                 return AlertDialog(
-                  title: const Text(
-                    "Permissions nedded!",
+                  title: Text(
+                    t?.openCameraPermissionDialogTitle ?? "Permissions nedded!",
                   ),
-                  content: const Text(
+                  content: Text(t?.openCameraPermissionDialogExplanation ??
                       "We need to ask your permission to be able to read / write in all directories, so we can save your photos in your selected directory."),
                   actions: [
                     TextButton(
                         onPressed: () => Navigator.of(ctx).pop(),
-                        child: const Text("Cancel")),
+                        child: Text(t?.addDirectoryFormCancel ?? "Cancel")),
                     TextButton(
-                        onPressed: onRequestPermission, child: const Text("Ok"))
+                        onPressed: onRequestPermission,
+                        child: Text(t?.ok ?? "Ok"))
                   ],
                 );
               });

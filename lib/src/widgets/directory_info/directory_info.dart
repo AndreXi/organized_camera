@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:organized_camera/src/localization/l10n.dart';
 import 'package:organized_camera/src/models/saved_directory/saved_directory.dart';
 import 'package:organized_camera/src/services/preferences_data.dart';
 import 'package:organized_camera/src/services/saved_directory_data.dart';
@@ -52,16 +53,19 @@ class _DirectoryInfoState extends State<DirectoryInfo> {
 
   @override
   Widget build(BuildContext context) {
+    final t = Localization(context).translations;
+
     final directoryProfile = _directoryProfile;
     final index = _index;
 
     if (index == null || directoryProfile == null) {
-      return const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 16.0),
+      return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 16.0),
           child: Card(
               child: Padding(
-            padding: EdgeInsets.all(16.0),
-            child: Text("You must select a profile first"),
+            padding: const EdgeInsets.all(16.0),
+            child: Text(
+                t?.directoryInfoEmpty ?? "You must select a profile first"),
           )));
     }
 
@@ -79,8 +83,8 @@ class _DirectoryInfoState extends State<DirectoryInfo> {
                 crossAxisAlignment: CrossAxisAlignment.baseline,
                 textBaseline: TextBaseline.alphabetic,
                 children: [
-                  const Text(
-                    "Profile:",
+                  Text(
+                    t?.directoryInfoProfileTitle ?? "Profile:",
                   ),
                   Expanded(
                     child: Text(
@@ -95,10 +99,11 @@ class _DirectoryInfoState extends State<DirectoryInfo> {
               const SizedBox(
                 height: 16.0,
               ),
-              const Align(
+              Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  "The photos will be saved in:",
+                  t?.directoryInfoDirectoryTitle ??
+                      "The photos will be saved in:",
                 ),
               ),
               TextField(

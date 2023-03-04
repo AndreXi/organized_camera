@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:organized_camera/src/localization/l10n.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -10,6 +11,8 @@ class AppInfoButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t = Localization(context).translations;
+
     Future<void> linkedinLink() async {
       await launchUrl(linkedinUrl);
     }
@@ -27,8 +30,8 @@ class AppInfoButton extends StatelessWidget {
           applicationName: packageInfo.appName,
           applicationVersion: packageInfo.version,
           children: [
-            const Center(child: Text("Developed by @AndreXi")),
-            const Center(child: Text("Andres Pereira")),
+            Center(child: Text(t?.appInfoDeveloper ?? "Developed by @AndreXi")),
+            Center(child: Text(t?.appInfoDeveloperName ?? "Andres Pereira")),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

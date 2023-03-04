@@ -1,30 +1,28 @@
-# organized_camera
+# About
+If you use your device camera to take photos for different context like work and family so this app is for you. 
+This app allow you to make shortcuts to different save directories, open the camera and all photos you take in this app will be saved in the selected directory, so you can have you work photos organized and will be easier to find for you.
 
-A new Flutter project.
+# Features
+- Create directory profiles (shortcuts) to easily change where to save next files.
+- Mark the directory with an icon.
+- Edit existing directory profiles.
+- Remove directory profiles (shortcut only).
 
-## Getting Started
+# Quick start
+You need Flutter SDK installed in you pc.
 
-This project is a starting point for a Flutter application that follows the
-[simple app state management
-tutorial](https://flutter.dev/docs/development/data-and-backend/state-mgmt/simple).
+## Signing
+First you need to sign the release app, more info [here](https://docs.flutter.dev/deployment/android#signing-the-apphttp:// "here").
+or restore `android/app/build.gradle` file to [this version](http://https://github.com/AndreXi/organized_camera/blob/2611a2e3f7004a3cf154004f09e19aac5a8ee914/android/app/build.gradle "this version").
 
-For help getting started with Flutter development, view the
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Build
+This will build an .apk file for all android target platforms.
+```bash
+flutter build apk --release
+```
 
-## Assets
-
-The `assets` directory houses images, fonts, and any other files you want to
-include with your application.
-
-The `assets/images` directory contains [resolution-aware
-images](https://flutter.dev/docs/development/ui/assets-and-images#resolution-aware).
-
-## Localization
-
-This project generates localized messages based on arb files found in
-the `lib/src/localization` directory.
-
-To support additional languages, please visit the tutorial on
-[Internationalizing Flutter
-apps](https://flutter.dev/docs/development/accessibility-and-localization/internationalization)
+## Install
+With an available android device.
+```
+flutter install
+```

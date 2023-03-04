@@ -1,5 +1,6 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:organized_camera/src/localization/l10n.dart';
 import 'package:organized_camera/src/models/saved_directory/saved_directory.dart';
 import 'package:organized_camera/src/widgets/select_icon_dialog/select_icon_dialog.dart';
 import 'package:organized_camera/src/widgets/select_icon_dialog/widgets/open_select_icon_dialog.dart';
@@ -29,6 +30,8 @@ class _EditDirectoryFormState extends State<EditDirectoryForm> {
 
   @override
   Widget build(BuildContext context) {
+    final t = Localization(context).translations;
+
     Future<bool> editDirectory() async {
       widget.directoryProfile.directory = _directoryController.text;
       widget.directoryProfile.name = _nameController.text;
@@ -67,7 +70,9 @@ class _EditDirectoryFormState extends State<EditDirectoryForm> {
         editDirectory().then((result) {
           if (result) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Directory updated')),
+              SnackBar(
+                  content:
+                      Text(t?.editDirectoryFormSuccess ?? 'Directory updated')),
             );
             Navigator.of(context).pop();
           }
@@ -80,7 +85,7 @@ class _EditDirectoryFormState extends State<EditDirectoryForm> {
       padding:
           MediaQuery.of(context).viewInsets, // Move up when keyboard is opened
       child: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
           child: Wrap(
@@ -89,7 +94,7 @@ class _EditDirectoryFormState extends State<EditDirectoryForm> {
             children: [
               Center(
                 child: Text(
-                  "Edit a directory profile",
+                  t?.editDirectoryFormTitle ?? "Edit a directory profile",
                   style: Theme.of(context).textTheme.headlineSmall,
                 ),
               ),
@@ -102,12 +107,14 @@ class _EditDirectoryFormState extends State<EditDirectoryForm> {
                       controller: _nameController,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return "The profile name is required";
+                          return t?.editDirectoryFormProfileNameError ??
+                              "The profile name is required";
                         }
                         return null;
                       },
-                      decoration:
-                          const InputDecoration(label: Text("Profile Name")),
+                      decoration: InputDecoration(
+                          label: Text(t?.editDirectoryFormProfileNameHint ??
+                              "Profile Name")),
                     ),
                   ),
                   const SizedBox(width: 16.0),
@@ -125,11 +132,13 @@ class _EditDirectoryFormState extends State<EditDirectoryForm> {
                     child: TextFormField(
                       readOnly: true,
                       controller: _directoryController,
-                      decoration:
-                          const InputDecoration(label: Text("Directory")),
+                      decoration: InputDecoration(
+                          label: Text(t?.editDirectoryFormdirectoryHint ??
+                              "Directory")),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return "The directory is required";
+                          return t?.editDirectoryFormdirectoryError ??
+                              "The directory is required";
                         }
                         return null;
                       },
@@ -138,12 +147,13 @@ class _EditDirectoryFormState extends State<EditDirectoryForm> {
                   const SizedBox(width: 16.0),
                   TextButton(
                       onPressed: onSelectDirectory,
-                      child: const Row(
+                      child: Row(
                         children: [
-                          Icon(Icons.folder),
+                          const Icon(Icons.folder),
                           Padding(
-                            padding: EdgeInsets.only(left: 8.0),
-                            child: Text("Select directory"),
+                            padding: const EdgeInsets.only(left: 8.0),
+                            child: Text(t?.editDirectoryFormSelectDirectory ??
+                                "Select directory"),
                           ),
                         ],
                       )),
@@ -157,11 +167,11 @@ class _EditDirectoryFormState extends State<EditDirectoryForm> {
                         foregroundColor: Colors.grey,
                       ),
                       onPressed: onCancel,
-                      child: const Text("Cancel")),
+                      child: Text(t?.editDirectoryFormCancel ?? "Cancel")),
                   FilledButton.icon(
                       onPressed: onSubmit,
                       icon: const Icon(Icons.edit),
-                      label: const Text("Edit")),
+                      label: Text(t?.editDirectoryFormCreate ?? "Edit")),
                 ],
               )
             ],

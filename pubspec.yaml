@@ -21,7 +21,6 @@ dependencies:
   package_info_plus: ^3.0.3
   permission_handler: ^10.2.0
   url_launcher: ^6.1.10
-  intl: ^0.18.0
 
 dev_dependencies:
   flutter_test:
@@ -41,6 +40,3 @@ flutter:
     # Add assets from the images directory to the application.
     - assets/images/
     - assets/icons/
-
-flutter_intl:
-  enabled: true

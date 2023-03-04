@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:organized_camera/src/layout/camera_layout.dart';
+import 'package:organized_camera/src/localization/l10n.dart';
 import 'package:organized_camera/src/services/saved_directory_data.dart';
 import 'package:organized_camera/src/widgets/camera_buttons/camera_buttons.dart';
 import 'package:organized_camera/src/widgets/camera_buttons/widgets/camera_back_button.dart';
@@ -47,16 +48,20 @@ class _CameraContentState extends State<_CameraContent> {
         () {
           showDialog(
               context: context,
-              builder: (context) => AlertDialog(
-                    title: const Text("OS Error"),
-                    content: const Text(
-                        "The selected path has write protection by system, check if the application has directory access permissions or select other directory to save it."),
-                    actions: [
-                      TextButton(
-                          onPressed: () => Navigator.of(context).pop(),
-                          child: const Text("Ok"))
-                    ],
-                  ));
+              builder: (context) {
+                final t = Localization(context).translations;
+
+                return AlertDialog(
+                  title: Text(t?.cameraOSError ?? "OS Error"),
+                  content: Text(t?.cameraDirectoryWriteError ??
+                      "The selected path has write protection by system, check if the application has directory access permissions or select other directory to save it."),
+                  actions: [
+                    TextButton(
+                        onPressed: () => Navigator.of(context).pop(),
+                        child: Text(t?.ok ?? "Ok"))
+                  ],
+                );
+              });
         }();
       }
       final targetPath = "$_savePath/${image.name}";
@@ -102,29 +107,36 @@ class _CameraContentState extends State<_CameraContent> {
           case 'CameraAccessDenied':
             showDialog(
                 context: context,
-                builder: (context) => AlertDialog(
-                      title: const Text("OS Error"),
-                      content: const Text(
-                          "Camera access denied, check app permissions."),
-                      actions: [
-                        TextButton(
-                            onPressed: () => Navigator.of(context).pop(),
-                            child: const Text("Ok"))
-                      ],
-                    ));
+                builder: (context) {
+                  final t = Localization(context).translations;
+                  return AlertDialog(
+                    title: Text(t?.cameraOSError ?? "OS Error"),
+                    content: Text(t?.cameraPermissionsError ??
+                        "Camera access denied, check app permissions."),
+                    actions: [
+                      TextButton(
+                          onPressed: () => Navigator.of(context).pop(),
+                          child: Text(t?.ok ?? "Ok"))
+                    ],
+                  );
+                });
             break;
           default:
             showDialog(
                 context: context,
-                builder: (context) => AlertDialog(
-                      title: const Text("OS Error"),
-                      content: const Text("Unknown camera error"),
-                      actions: [
-                        TextButton(
-                            onPressed: () => Navigator.of(context).pop(),
-                            child: const Text("Ok"))
-                      ],
-                    ));
+                builder: (context) {
+                  final t = Localization(context).translations;
+                  return AlertDialog(
+                    title: Text(t?.cameraOSError ?? "OS Error"),
+                    content:
+                        Text(t?.cameraUnknownError ?? "Unknown camera error"),
+                    actions: [
+                      TextButton(
+                          onPressed: () => Navigator.of(context).pop(),
+                          child: Text(t?.ok ?? "Ok"))
+                    ],
+                  );
+                });
             break;
         }
       }
@@ -181,74 +193,6 @@ class _CameraContentState extends State<_CameraContent> {
         ),
       ),
     );
-
-    // return SafeArea(
-    //   child: Scaffold(
-    //     backgroundColor: Colors.black87,
-    //     body: Column(
-    //       mainAxisAlignment: MainAxisAlignment.end,
-    //       children: [
-    //         Expanded(
-    //           flex: 9,
-    //           child: _controller.value.isInitialized
-    //               ? Center(
-    //                   child: CameraPreview(
-    //                     _controller,
-    //                   ),
-    //                 )
-    //               : const Center(child: CircularProgressIndicator()),
-    //         ),
-    //         Expanded(
-    //           flex: 1,
-    //           child: SizedBox(
-    //             height: double.infinity,
-    //             child: Row(
-    //               mainAxisAlignment: MainAxisAlignment.center,
-    //               children: [
-    //                 ElevatedButton(
-    //                     onPressed: goBack, child: const Icon(Icons.arrow_back)),
-    //                 const SizedBox(
-    //                   width: 16.0,
-    //                 ),
-    //                 SizedBox(
-    //                   height: double.infinity,
-    //                   child: !_cameraBusy
-    //                       ? ElevatedButton(
-    //                           onPressed: _controller.value.isInitialized
-    //                               ? takePhoto
-    //                               : null,
-    //                           style: ElevatedButton.styleFrom(
-    //                             shape: const CircleBorder(),
-    //                           ),
-    //                           child: const Icon(
-    //                             Icons.photo_camera,
-    //                             size: 32.0,
-    //                           ))
-    //                       : ElevatedButton(
-    //                           onPressed: () {},
-    //                           style: ElevatedButton.styleFrom(
-    //                             shape: const CircleBorder(),
-    //                           ),
-    //                           child: const Center(
-    //                             child: CircularProgressIndicator(),
-    //                           )),
-    //                 ),
-    //                 const SizedBox(
-    //                   width: 16.0,
-    //                 ),
-    //                 ElevatedButton(
-    //                     onPressed: _controller.value.isInitialized
-    //                         ? changeCamera
-    //                         : null,
-    //                     child: const Icon(Icons.flip_camera_android)),
-    //               ],
-    //             ),
-    //           ),
-    //         ),
-    //       ],
-    //     ),
-    //   ),
-    // );
   }
 }
 
@@ -267,22 +211,5 @@ class CameraView extends StatelessWidget {
           }
           return const Center(child: CircularProgressIndicator());
         });
-  }
-}
-
-// A widget that displays the picture taken by the user.
-class DisplayPictureScreen extends StatelessWidget {
-  final String imagePath;
-
-  const DisplayPictureScreen({super.key, required this.imagePath});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Display the Picture')),
-      // The image is stored as a file on the device. Use the `Image.file`
-      // constructor with the given path to display the image.
-      body: Image.file(File(imagePath)),
-    );
   }
 }

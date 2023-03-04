@@ -14,11 +14,11 @@ class AppInfoButton extends StatelessWidget {
     final t = Localization(context).translations;
 
     Future<void> linkedinLink() async {
-      await launchUrl(linkedinUrl);
+      await launchUrl(linkedinUrl, mode: LaunchMode.externalApplication);
     }
 
     Future<void> githubLink() async {
-      await launchUrl(githubUrl);
+      await launchUrl(githubUrl, mode: LaunchMode.externalApplication);
     }
 
     void onPressed() async {

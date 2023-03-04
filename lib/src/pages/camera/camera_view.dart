@@ -2,9 +2,13 @@ import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:organized_camera/src/layout/camera_layout.dart';
+import 'package:organized_camera/src/localization/l10n.dart';
 import 'package:organized_camera/src/services/saved_directory_data.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:organized_camera/src/widgets/camera_buttons/camera_buttons.dart';
+import 'package:organized_camera/src/widgets/camera_buttons/widgets/camera_back_button.dart';
+import 'package:organized_camera/src/widgets/camera_buttons/widgets/camera_flip_button.dart';
+import 'package:organized_camera/src/widgets/camera_buttons/widgets/camera_shot_button.dart';
 
 class _CameraContent extends StatefulWidget {
   const _CameraContent({required this.cameras});
@@ -28,8 +32,6 @@ class _CameraContentState extends State<_CameraContent> {
   }
 
   void takePhoto() async {
-    final dir = await getApplicationDocumentsDirectory();
-
     setState(() {
       _cameraBusy = true;
     });
@@ -39,12 +41,33 @@ class _CameraContentState extends State<_CameraContent> {
     // Save to path
     if (_savePath != null) {
       // final targetPath = "${dir?.path}/${image.name}";
-      final dire = await Directory(_savePath!).create(recursive: true);
+
+      try {
+        await Directory(_savePath!).create(recursive: true);
+      } on OSError catch (_) {
+        () {
+          showDialog(
+              context: context,
+              builder: (context) {
+                final t = Localization(context).translations;
+
+                return AlertDialog(
+                  title: Text(t?.cameraOSError ?? "OS Error"),
+                  content: Text(t?.cameraDirectoryWriteError ??
+                      "The selected path has write protection by system, check if the application has directory access permissions or select other directory to save it."),
+                  actions: [
+                    TextButton(
+                        onPressed: () => Navigator.of(context).pop(),
+                        child: Text(t?.ok ?? "Ok"))
+                  ],
+                );
+              });
+        }();
+      }
       final targetPath = "$_savePath/${image.name}";
       final file = await File(targetPath).create(recursive: true);
       await file.writeAsBytes(await image.readAsBytes(),
           mode: FileMode.writeOnly);
-      // await image.saveTo(targetPath);
     }
 
     await _controller.resumePreview();
@@ -82,10 +105,38 @@ class _CameraContentState extends State<_CameraContent> {
       if (e is CameraException) {
         switch (e.code) {
           case 'CameraAccessDenied':
-            // Handle access errors here.
+            showDialog(
+                context: context,
+                builder: (context) {
+                  final t = Localization(context).translations;
+                  return AlertDialog(
+                    title: Text(t?.cameraOSError ?? "OS Error"),
+                    content: Text(t?.cameraPermissionsError ??
+                        "Camera access denied, check app permissions."),
+                    actions: [
+                      TextButton(
+                          onPressed: () => Navigator.of(context).pop(),
+                          child: Text(t?.ok ?? "Ok"))
+                    ],
+                  );
+                });
             break;
           default:
-            // Handle other errors here.
+            showDialog(
+                context: context,
+                builder: (context) {
+                  final t = Localization(context).translations;
+                  return AlertDialog(
+                    title: Text(t?.cameraOSError ?? "OS Error"),
+                    content:
+                        Text(t?.cameraUnknownError ?? "Unknown camera error"),
+                    actions: [
+                      TextButton(
+                          onPressed: () => Navigator.of(context).pop(),
+                          child: Text(t?.ok ?? "Ok"))
+                    ],
+                  );
+                });
             break;
         }
       }
@@ -108,68 +159,38 @@ class _CameraContentState extends State<_CameraContent> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black87,
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          Expanded(
-            flex: 9,
-            child: _controller.value.isInitialized
-                ? Center(
-                    child: CameraPreview(
-                      _controller,
-                    ),
-                  )
-                : const Center(child: CircularProgressIndicator()),
-          ),
-          Expanded(
-            flex: 1,
-            child: SizedBox(
-              height: double.infinity,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ElevatedButton(
-                      onPressed: goBack, child: const Icon(Icons.arrow_back)),
-                  const SizedBox(
-                    width: 16.0,
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: Colors.black87,
+        body: CameraLayout(
+          cameraPreview: _controller.value.isInitialized
+              ? Center(
+                  child: CameraPreview(
+                    _controller,
                   ),
-                  SizedBox(
-                    height: double.infinity,
-                    child: !_cameraBusy
-                        ? ElevatedButton(
-                            onPressed: _controller.value.isInitialized
-                                ? takePhoto
-                                : null,
-                            style: ElevatedButton.styleFrom(
-                              shape: const CircleBorder(),
-                            ),
-                            child: const Icon(
-                              Icons.photo_camera,
-                              size: 32.0,
-                            ))
-                        : ElevatedButton(
-                            onPressed: () {},
-                            style: ElevatedButton.styleFrom(
-                              shape: const CircleBorder(),
-                            ),
-                            child: const Center(
-                              child: CircularProgressIndicator(),
-                            )),
-                  ),
-                  const SizedBox(
-                    width: 16.0,
-                  ),
-                  ElevatedButton(
-                      onPressed:
-                          _controller.value.isInitialized ? changeCamera : null,
-                      child: const Icon(Icons.flip_camera_android)),
-                ],
-              ),
+                )
+              : const Center(child: CircularProgressIndicator()),
+          cameraControls: CameraButtons(
+            backButton: CameraBackButton(onPressed: goBack),
+            shotButton: CameraShotButton(
+              cameraBusy: _cameraBusy,
+              onPressed: takePhoto,
+            ),
+            flipButton: CameraFlipButton(
+              onPressed: _controller.value.isInitialized ? changeCamera : null,
             ),
           ),
-        ],
+          cameraControlsV: CameraButtonsV(
+            backButton: CameraBackButton(onPressed: goBack),
+            shotButton: CameraShotButton(
+              cameraBusy: _cameraBusy,
+              onPressed: takePhoto,
+            ),
+            flipButton: CameraFlipButton(
+              onPressed: _controller.value.isInitialized ? changeCamera : null,
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -190,22 +211,5 @@ class CameraView extends StatelessWidget {
           }
           return const Center(child: CircularProgressIndicator());
         });
-  }
-}
-
-// A widget that displays the picture taken by the user.
-class DisplayPictureScreen extends StatelessWidget {
-  final String imagePath;
-
-  const DisplayPictureScreen({super.key, required this.imagePath});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Display the Picture')),
-      // The image is stored as a file on the device. Use the `Image.file`
-      // constructor with the given path to display the image.
-      body: Image.file(File(imagePath)),
-    );
   }
 }

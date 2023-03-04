@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-List<Icon> availableIcons = const [
+const List<Icon> availableIcons = [
   Icon(Icons.home),
   Icon(Icons.group),
   Icon(Icons.family_restroom),
@@ -8,6 +8,9 @@ List<Icon> availableIcons = const [
   Icon(Icons.landscape),
   Icon(Icons.star),
 ];
+
+final List<int> availableIconsCodes =
+    availableIcons.map((e) => e.icon!.codePoint).toList();
 
 class SelectIconDialog extends StatelessWidget {
   const SelectIconDialog(

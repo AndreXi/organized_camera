@@ -3,6 +3,7 @@ import 'package:organized_camera/src/localization/l10n.dart';
 import 'package:organized_camera/src/models/saved_directory/saved_directory.dart';
 import 'package:organized_camera/src/services/preferences_data.dart';
 import 'package:organized_camera/src/widgets/edit_directory_form/edit_directory_form.dart';
+import 'package:organized_camera/src/widgets/select_icon_dialog/select_icon_dialog.dart';
 
 class SavedDirectoryTile extends StatelessWidget {
   const SavedDirectoryTile(
@@ -89,9 +90,13 @@ class SavedDirectoryTile extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Icon(
-              IconData(directoryProfile.iconId, fontFamily: 'MaterialIcons'),
-              size: 36,
+            SizedBox.square(
+              dimension: 32.0,
+              child: FittedBox(
+                fit: BoxFit.fill,
+                child: availableIcons[
+                    availableIconsCodes.indexOf(directoryProfile.iconId)],
+              ),
             ),
             Text(
               directoryProfile.name,

@@ -1,0 +1,9 @@
+{
+  "appTitle": "Organized Camera",
+  "@appTitle": {
+    "description": "El título de la aplicación"
+  },
+  "homeSelectDirectory": "Selecciona una carpeta:",
+  "homeAddNewDirectory": "Agrega una carpeta",
+  "homeDirectoryInfo": "Información de la carpeta:"
+}

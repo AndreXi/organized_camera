@@ -5,6 +5,7 @@ import 'package:organized_camera/src/widgets/app_info/app_info.dart';
 import 'package:organized_camera/src/widgets/directory_info/directory_info.dart';
 import 'package:organized_camera/src/widgets/open_camera_button/open_camera_button.dart';
 import 'package:organized_camera/src/widgets/saved_directory_list/saved_directory_list.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
@@ -13,6 +14,8 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t = AppLocalizations.of(context);
+
     void openAddDirectoryForm() {
       showModalBottomSheet<void>(
         context: context,
@@ -35,34 +38,36 @@ class HomeView extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Padding(
-                    padding: EdgeInsets.all(10.0),
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
                     child: Text(
-                      "Select the directory:",
+                      t?.homeSelectDirectory ?? "Select the directory:",
                     ),
                   ),
                   TextButton.icon(
                       onPressed: openAddDirectoryForm,
                       icon: const Icon(Icons.add),
-                      label: const Text('Add new directory')),
+                      label: Text(
+                        t?.homeAddNewDirectory ?? "Add new directory",
+                      )),
                 ],
               ),
               const Expanded(child: SavedDirectoryList()),
             ],
           ),
-          directoryInfo: const Column(
+          directoryInfo: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               Align(
                 alignment: Alignment.centerLeft,
                 child: Padding(
-                  padding: EdgeInsets.only(left: 10.0, bottom: 14.0),
+                  padding: const EdgeInsets.only(left: 10.0, bottom: 14.0),
                   child: Text(
-                    "Directory info:",
+                    t?.homeDirectoryInfo ?? "Directory info:",
                   ),
                 ),
               ),
-              DirectoryInfo(),
+              const DirectoryInfo(),
             ],
           ),
           cameraButton: const OpenCameraButton(),
